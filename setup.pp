@@ -57,6 +57,7 @@ file { '/etc/default/haproxy':
     source => "puppet:///modules/haproxy/default",
     owner  => root,
     group  => root,
+    mode   => 0644,
     notify => Service['haproxy'],
 }
 
@@ -64,12 +65,14 @@ file { '/etc/haproxy/haproxy.conf':
     source => "puppet:///modules/haproxy/haproxy.conf",
     owner  => root,
     group  => root,
+    mode   => 0644,
     notify => Service['haproxy'],
 }
 
 service { 'haproxy':
     ensure  => running,
     require => [
+        Package['haproxy'],
         File['/etc/default/haproxy', '/etc/haproxy/haproxy.conf'],
     ],
 }
