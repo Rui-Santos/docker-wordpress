@@ -1,0 +1,9 @@
+# docker
+
+description "docker"
+
+start on runlevel [234]
+stop on starting rc RUNLEVEL=[0156]
+
+exec /usr/bin/docker -H tcp://0.0.0.0:4243 -H unix:///var/run/docker.sock -d
+respawn
