@@ -52,3 +52,24 @@ service { 'docker-daemon':
         File['/etc/init/docker-daemon.conf'],
     ],
 }
+
+file { '/etc/default/haproxy':
+    source => "puppet:///modules/haproxy/default",
+    owner  => root,
+    group  => root,
+    notify => Service['haproxy'],
+}
+
+file { '/etc/haproxy/haproxy.conf':
+    source => "puppet:///modules/haproxy/haproxy.conf",
+    owner  => root,
+    group  => root,
+    notify => Service['haproxy'],
+}
+
+service { 'haproxy':
+    ensure  => running,
+    require => [
+        File['/etc/default/haproxy', '/etc/haproxy/haproxy.conf'],
+    ],
+}
