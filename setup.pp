@@ -1,4 +1,3 @@
-
 Exec{ path => ['/usr/bin/', '/usr/local/bin/', '/usr/sbin/'], }
 
 exec { 'apt-get update':
@@ -62,11 +61,12 @@ file { '/etc/default/haproxy':
 }
 
 file { '/etc/haproxy/haproxy.conf':
-    source => "puppet:///modules/haproxy/haproxy.conf",
-    owner  => root,
-    group  => root,
-    mode   => 0644,
-    notify => Service['haproxy'],
+    source  => "puppet:///modules/haproxy/haproxy.conf",
+    owner   => root,
+    group   => root,
+    mode    => 0644,
+    require => Package['haproxy'],
+    notify  => Service['haproxy'],
 }
 
 service { 'haproxy':
