@@ -1,4 +1,4 @@
-Exec{ path => ['/usr/bin/', '/usr/local/bin/', '/usr/sbin/'], }
+Exec{ path => ['/usr/bin/', '/usr/local/bin/', '/usr/sbin/', '/bin'], }
 
 exec { 'apt-get update':
     user => root,
