@@ -44,8 +44,10 @@ user { 'root':
 }
 
 service { 'docker-daemon':
-    ensure  => running,
-    require => [
+    ensure   => running,
+    enable   => true,
+    provider => upstart,
+    require  => [
         Exec['docker_install'],
         User['root'],
         File['/etc/init/docker-daemon.conf'],
@@ -71,6 +73,7 @@ file { '/etc/haproxy/haproxy.cfg':
 
 service { 'haproxy':
     ensure  => running,
+    enable  => true,
     require => [
         Package['haproxy'],
         File['/etc/default/haproxy', '/etc/haproxy/haproxy.cfg'],
