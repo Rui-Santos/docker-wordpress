@@ -76,3 +76,17 @@ docker export <customer_name> > <customer_name>.tar
 ```
 
 The resulting tar file includes MySQL and all data, PHP5, Apache2, Wordpress + Themes and all customizations.
+
+## import an image
+
+To import an image from an existing customer execute the following command:
+
+```text
+cat <customer_name>.tar | docker import - <customer_name>
+```
+
+Imported images need to be started with the following command:
+
+```text
+docker run -p 127.0.0.1:<http_port>:80 -p <ssh_port>:22 -name="<customer_name>" -i -d -t <customer_name> /start.sh
+```
