@@ -13,8 +13,6 @@ docker pull ubuntu
 docker pull rstiller/wordpress
 ```
 
-## architecture
-
 ## add a new customer
 
 Each new customer needs to have
