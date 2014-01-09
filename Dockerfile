@@ -13,7 +13,7 @@ RUN cp -R /wordpress/* /var/www/
 RUN rm -fr /wordpress
 ADD ./wp-config.php /var/www/wp-config.php
 RUN echo "<?php " > /var/www/wp-keys.php && wget -qO- https://api.wordpress.org/secret-key/1.1/salt/ >> /var/www/wp-keys.php
-RUN sed -i 's#<< KEYS >>#include "wp-keys.php";#g' /var/www/wp-config.php
+RUN sed -i 's#<< KEYS >>#require_once(ABSPATH . "wp-keys.php");#g' /var/www/wp-config.php
 
 ENV APACHE_RUN_USER www-data
 ENV APACHE_RUN_GROUP www-data
