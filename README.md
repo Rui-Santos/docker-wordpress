@@ -5,6 +5,7 @@
 Connect to your server and execute the following commands:
 
 ```text
+sudo apt-get update
 sudo apt-get install -y puppet git
 git clone https://github.com/rstiller/docker-wordpress.git
 cd docker-wordpress
