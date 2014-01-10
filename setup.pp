@@ -9,7 +9,6 @@ package {[
     'htop',
     'vim',
     'redir',
-    'cgroup-lite',
     'wget',
     ]:
     ensure  => latest,
