@@ -8,7 +8,9 @@ package {[
     'haproxy',
     'htop',
     'vim',
+    'lxc',
     'redir',
+    'cgroup-lite',
     'wget',
     ]:
     ensure  => latest,
@@ -16,10 +18,19 @@ package {[
 }
 
 exec { 'docker_install':
-    command => 'wget -qO- http://get.docker.io | sh',
+    command => 'wget --output-document=docker https://get.docker.io/builds/Linux/x86_64/docker-latest && chmod +x /usr/bin/docker',
+    cwd     => '/usr/bin',
     user    => root,
     creates => '/usr/bin/docker',
     require => Package['wget'],
+}
+
+file { '/etc/init/docker-daemon.conf':
+    source => "puppet:///modules/docker/docker.upstart",
+    owner  => root,
+    group  => root,
+    mode   => 0755,
+    notify => Service['docker-daemon'],
 }
 
 group { 'docker':
@@ -32,12 +43,14 @@ user { 'root':
     require => Group['docker'],
 }
 
-service { 'docker':
+service { 'docker-daemon':
     ensure   => running,
     enable   => true,
+    provider => upstart,
     require  => [
         Exec['docker_install'],
         User['root'],
+        File['/etc/init/docker-daemon.conf'],
     ],
 }
 
