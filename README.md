@@ -88,3 +88,7 @@ Imported images need to be started with the following command:
 ```text
 docker run -p 127.0.0.1:<http_port>:80 -p <ssh_port>:22 -name="<customer_name>" -i -d -t <customer_name> /start.sh
 ```
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/rstiller/docker-wordpress/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
