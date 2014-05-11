@@ -35,22 +35,9 @@ define new_user($user, $password) {
         require => [File['/mails/vmaps'], Exec["${user}_add_mail_address"]],
     }
     
-    user { "${user}":
-        ensure => present,
-        home   => '/var/www/wordpress',
-        shell  => '/bin/false',
-    }
-    
-    exec { "${user}_ftp":
-        command  => "echo ${user} >> /etc/vsftpd/user_list",
-        require  => File['/etc/vsftpd'],
-        password => sha1($password),
-        unless   => "grep -c ${user} /etc/vsftpd/user_list",
-    }
-    
 }
 
-file { ['/mails', '/etc/vsftpd']: ensure => directory, }
+file { ['/mails']: ensure => directory, }
 file { ['/mails/passwd', '/mails/users', '/mails/vmaps']: ensure => present, require => File['/mails'], }
 
 new_user { 'webmaster':  user => 'webmaster', password => 'webmaster', }

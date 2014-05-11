@@ -1,23 +1,7 @@
 
-frontend ##name##_ftp1_proxy
-    bind *:##ftp-host-port1##
-    mode tcp
-    default_backend ##name##_ftp1_cluster
-
-frontend ##name##_ftp2_proxy
-    bind *:##ftp-host-port2##
-    mode tcp
-    default_backend ##name##_ftp2_cluster
-
-frontend ##name##_imap_proxy
-    bind *:##imap-host-port##
-    mode tcp
-    default_backend ##name##_imap_cluster
-
-frontend ##name##_smtp_proxy
-    bind *:##smtp-host-port##
-    mode tcp
-    default_backend ##name##_smtp_cluster
+###############################################################################
+# START CONFIG FOR ##name##
+###############################################################################
 
 backend ##name##_http_cluster
     server server1 127.0.0.1:##http-guest-port## check
@@ -25,14 +9,6 @@ backend ##name##_http_cluster
 backend ##name##_https_cluster
     server server1 127.0.0.1:##https-guest-port## check
 
-backend ##name##_ftp1_cluster
-    server server1 127.0.0.1:##ftp-guest-port1## check
-
-backend ##name##_ftp2_cluster
-    server server1 127.0.0.1:##ftp-guest-port2## check
-
-backend ##name##_imap_cluster
-    server server1 127.0.0.1:##imap-guest-port## check
-
-backend ##name##_smtp_cluster
-    server server1 127.0.0.1:##smtp-guest-port## check
+###############################################################################
+# END CONFIG FOR ##name##
+###############################################################################

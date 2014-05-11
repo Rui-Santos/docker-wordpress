@@ -22,6 +22,7 @@ package { [
     'wget',
     'unzip',
     'logwatch',
+    'proftpd',
     ]:
     ensure => latest,
 }
@@ -112,6 +113,10 @@ file { '/etc/default/haproxy':
 
 file { '/containers/haproxy':
     source => 'puppet:///modules/server/haproxy',
+}
+
+file { '/containers/proftp':
+    source => 'puppet:///modules/server/proftp',
 }
 
 exec { 'copy_logwatch':

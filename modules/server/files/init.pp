@@ -25,6 +25,7 @@ exec { 'apply_domain':
     command => 'echo "${domain}" > /mails/vhosts',
     creates => '/mails/vhosts',
     notify  => Exec['generate_vhosts'],
+    require => File['/mails'],
 }
 exec { 'generate_vhosts':
     command => 'postmap /mails/vhosts',

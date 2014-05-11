@@ -1,0 +1,9 @@
+<VirtualHost ##domain##>
+ServerAdmin             webmaster@##domain##
+ServerName              "##name##"
+TransferLog             /containers/##name##/logs/proftpd/xfer.log
+MaxLoginAttempts        3
+RequireValidShell       no
+DefaultRoot             /containers/##name##/wordpress
+AllowOverwrite          yes
+</VirtualHost>
