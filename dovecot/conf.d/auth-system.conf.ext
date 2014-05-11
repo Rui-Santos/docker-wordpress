@@ -1,0 +1,31 @@
+passdb {
+  driver = passwd-file
+  args = scheme=ssha256 /mails/passwd
+  default_fields =
+  override_fields =
+
+  deny = no
+  master = no
+  pass = no
+  #skip = never
+
+  #result_failure = continue
+  #result_internalfail = continue
+  #result_success = return-ok
+}
+
+userdb {
+  driver = passwd-file
+  args = username_format=%u /mails/users
+
+  default_fields = uid=email gid=email shell=/bin/false home=/mails/%d/%n
+  override_fields = 
+
+  #skip = never
+
+  #result_failure = continue
+  #result_internalfail = continue
+  #result_success = return-ok
+}
+
+auth_debug_passwords=yes

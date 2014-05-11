@@ -1,25 +1,72 @@
-FROM ubuntu
+FROM debian:wheezy
 
-RUN apt-get update
-RUN apt-get install -y apache2 php5 php5-mysql mysql-server mysql-client openssh-server unzip
-RUN mkdir /var/run/sshd
-ADD ./start-services.sh /start.sh
-RUN chmod +x /start.sh
+# enable false as no-login shell
+RUN echo "/bin/false" >> /etc/shells
 
-ADD http://de.wordpress.org/wordpress-3.8-de_DE.zip /wordpress.zip
-RUN unzip /wordpress.zip
-RUN rm /var/www/index.html
-RUN cp -R /wordpress/* /var/www/
-RUN rm -fr /wordpress
-ADD ./wp-config.php /var/www/wp-config.php
-RUN echo "<?php " > /var/www/wp-keys.php && wget -qO- https://api.wordpress.org/secret-key/1.1/salt/ >> /var/www/wp-keys.php
-RUN sed -i 's#<< KEYS >>#require_once(ABSPATH . "wp-keys.php");#g' /var/www/wp-config.php
+# update package manager
+RUN apt-get update -q
 
-ENV APACHE_RUN_USER www-data
-ENV APACHE_RUN_GROUP www-data
-ENV APACHE_LOG_DIR /var/log/apache2
+# install common software
+RUN apt-get install -y --force-yes --no-install-recommends \
+    openssl selinux-basics selinux-policy-default auditd \
+    mysql-client mysql-server \
+    php5 php5-memcached php5-mysql php-apc memcached \
+    apache2 libapache2-modsecurity \
+    postfix dovecot-common dovecot-pop3d dovecot-imapd libsasl2-2 libsasl2-modules sasl2-bin \
+    supervisor cron unzip puppet wget vsftpd logwatch
 
-EXPOSE 22
-EXPOSE 80
+RUN mkdir -p /var/log/php
+RUN mkdir -p /var/run/vsftpd/empty
+RUN chown root:root /var/run/vsftpd/empty
+RUN chmod 0660 /var/run/vsftpd/empty
+RUN a2enmod mod-security
+RUN a2enmod ssl
+RUN cp -R /usr/share/logwatch/default.conf/logfiles/* /etc/logwatch/conf/logfiles/
+RUN cp -R /usr/share/logwatch/default.conf/services/* /etc/logwatch/conf/services/
+
+# a system user for memcached
+RUN adduser memcached --shell /bin/false --no-create-home --disabled-login --system
+RUN adduser email --shell /bin/false --no-create-home --disabled-login --system
+RUN adduser ftpsecure --shell /bin/false --no-create-home --disabled-login --system
+
+# load config files
+ADD supervisor/supervisord.conf /etc/supervisor/supervisord.conf
+
+ADD memcache/memcached.conf /etc/memcached.conf
+
+ADD vsftpd/vsftpd.conf /etc/vsftpd.conf
+
+ADD php/php.ini /etc/php5/apache2/php.ini
+
+ADD mysql/mysql.conf /etc/mysql/my.cnf
+
+ADD apache2/apache2.conf /etc/apache2/apache2.cnf
+ADD apache2/envvars /etc/apache2/envvars
+ADD apache2/apache-blog.conf /etc/apache2/sites-enabled/000-blog
+
+ADD system/sysctl.conf /etc/sysctl.conf
+
+ADD dovecot/conf.d/10-auth.conf /etc/dovecot/conf.d/10-auth.conf
+ADD dovecot/conf.d/10-mail.conf /etc/dovecot/conf.d/10-mail.conf
+ADD dovecot/conf.d/10-master.conf /etc/dovecot/conf.d/10-master.conf
+ADD dovecot/conf.d/10-ssl.conf /etc/dovecot/conf.d/10-ssl.conf
+ADD dovecot/conf.d/auth-system.conf.ext /etc/dovecot/conf.d/auth-system.conf.ext
+ADD dovecot/dovecot.conf /etc/dovecot/dovecot.conf
+
+ADD postfix/sasl/smtpd.conf /etc/postfix/sasl/smtpd.conf
+ADD postfix/main.cf /etc/postfix/main.cf
+ADD postfix/master.cf /etc/postfix/master.cf
+
+ADD cron/puppet /etc/cron.hourly/puppet
+ADD cron/backup /etc/cron.daily/backup
+
+ADD start.sh /start.sh
+
+RUN rm -f /etc/apache2/sites-enabled/000-default
+RUN chmod +x /start.sh /etc/cron.hourly/puppet /etc/cron.daily/backup
+RUN chown -R root:root /etc/postfix/ /etc/dovecot/ /etc/supervisor/ /etc/php5/ /etc/apache2/ /etc/mysql/ /etc/cron.hourly/ /etc/sysctl.conf /etc/memcached.conf /etc/vsftpd.conf /start.sh
+
+# ports (ftp, http, https, imaps, smtp, passive ftp)
+EXPOSE 20 21 80 443 993 587 10000 10001 10002 10003 10004 10005 10006 10007 10008 10009
 
 CMD ['/start.sh']

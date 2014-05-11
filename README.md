@@ -10,7 +10,6 @@ sudo apt-get install -y puppet git
 git clone https://github.com/rstiller/docker-wordpress.git
 cd docker-wordpress
 sudo puppet apply --modulepath=modules setup.pp
-docker pull ubuntu
 docker pull rstiller/wordpress
 ```
 

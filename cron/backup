@@ -1,0 +1,10 @@
+#!/bin/bash
+
+currentdate=$(date +"%m_%d_%Y")
+mysqldump -u root -p __PASSWORD__ wordpress_$FACTER_DOMAIN > /backups/$currentdate.dump
+tar -cvzf /backups/$currentdate-mysql.tar.gz /backups/$currentdate.dump
+tar -cvzf /backups/$currentdate-wordpress.tar.gz /var/www/
+rm -f /backups/$currentdate.dump /backups/latest-mysql.tar.gz /backups/latest-wordpress.tar.gz
+
+cp /backups/$currentdate-mysql.tar.gz /backups/latest-mysql.tar.gz
+cp /backups/$currentdate-wordpress.tar.gz /backups/latest-wordpress.tar.gz
