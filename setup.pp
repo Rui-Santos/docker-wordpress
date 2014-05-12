@@ -69,22 +69,27 @@ exec { 'download_wordpress':
 
 file { '/containers/run.sh':
     source => 'puppet:///modules/server/run.sh',
+    mode   => 'ug+x',
 }
 
 file { '/containers/clean.sh':
     source => 'puppet:///modules/server/clean.sh',
+    mode   => 'ug+x',
 }
 
 file { '/containers/stop.sh':
     source => 'puppet:///modules/server/stop.sh',
+    mode   => 'ug+x',
 }
 
 file { '/containers/start.sh':
     source => 'puppet:///modules/server/start.sh',
+    mode   => 'ug+x',
 }
 
 file { '/containers/vars.sh':
     source => 'puppet:///modules/server/vars.sh',
+    mode   => 'ug+x',
 }
 
 file { '/containers/init.pp':
@@ -101,6 +106,7 @@ file { '/containers/wp-config.php':
 
 file { '/usr/bin/add-blog.sh':
     source => 'puppet:///modules/server/add-blog.sh',
+    mode   => 'ug+x',
 }
 
 file { '/etc/haproxy/haproxy.cfg':

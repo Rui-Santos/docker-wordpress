@@ -52,6 +52,7 @@ ADD postfix/main.cf /etc/postfix/main.cf
 ADD postfix/master.cf /etc/postfix/master.cf
 
 ADD cron/puppet /etc/cron.hourly/puppet
+ADD cron/logwatch /etc/cron.daily/00logwatch
 ADD cron/backup /etc/cron.daily/backup
 
 ADD start.sh /start.sh

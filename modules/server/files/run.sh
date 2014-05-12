@@ -7,7 +7,7 @@ basedir=`dirname $0`
 docker run -i -t -d \
     -v /containers/$container_hostname/backups:/backups:rw \
     -v /containers/$container_hostname/certs:/etc/ssl/private:ro \
-    -v /containers/$container_hostname/logs:/logs:rw \
+    -v /containers/$container_hostname/logs:/var/log:rw \
     -v /containers/$container_hostname/mails:/mails:rw \
     -v /containers/$container_hostname/mysql:/mysql:rw \
     -v /containers/$container_hostname/puppet/modules:/puppet/modules:rw \

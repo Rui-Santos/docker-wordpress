@@ -6,6 +6,5 @@ basedir=`dirname $0`
 
 docker stop $container_name
 docker rm $container_name
-rm -fr ${basedir}/logs/supervisor/*
-rm -fr ${basedir}/logs/apache2/*
+rm -fr ${basedir}/logs/*
 rm -fr ${basedir}/mysql/*

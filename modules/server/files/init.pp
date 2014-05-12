@@ -14,7 +14,7 @@ exec { 'postfix_domain':
     unless  => "grep -c ${domain} /etc/postfix/main.cf",
 }
 
-file { ['/mails', '/logs/apache2', '/logs/supervisor', '/var/cache/puppet']:   ensure => directory, }
+file { ['/mails', '/var/log/apache2', '/var/log/supervisor', '/var/cache/puppet']:   ensure => directory, }
 file { ['/mails/valiases']: ensure => present, require => File['/mails'], }
 
 exec { 'generate_valiases':

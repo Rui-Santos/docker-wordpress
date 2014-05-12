@@ -14,7 +14,7 @@ name="${1//./_}"
 ###############################################################################
 mkdir -p /containers/$name/backups/
 mkdir -p /containers/$name/certs/
-mkdir -p /containers/$name/logs/proftpd
+mkdir -p /containers/$name/logs
 mkdir -p /containers/$name/mails/
 mkdir -p /containers/$name/mysql/
 mkdir -p /containers/$name/puppet/modules/server/files/
