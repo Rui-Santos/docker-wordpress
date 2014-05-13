@@ -13,6 +13,7 @@ docker run -i -t -d \
     -v /containers/$container_hostname/puppet/modules:/puppet/modules:rw \
     -v /containers/$container_hostname/wordpress:/var/www/wordpress:rw \
     -e FACTER_DOMAIN=$container_domain \
+    -e FACTER_HOSTNAME=$container_hostname \
     -p 127.0.0.1:$[container_port+0+32768]:80 \
     -p 127.0.0.1:$[container_port+1+32768]:443 \
     -p 0.0.0.0:$[container_port+2+32768]:993 \

@@ -32,6 +32,16 @@ exec { 'generate_vhosts':
     onlyif  => ['test -f /mails/vhosts'],
     require => Exec['apply_domain'],
 }
+exec { 'set_fqdn':
+    command => 'sed -i "s/${hostname}/${domain}/g" /etc/hosts && touch /var/cache/puppet/set_fqdn',
+    creates => '/var/cache/puppet/set_fqdn',
+    require => File['/var/cache/puppet'],
+}
+exec { 'set_apache_domain':
+    command => 'sed -i "s/##DOMAIN##/${domain}/g" /etc/apache2/envvars && touch /var/cache/puppet/set_apache_domain',
+    creates => '/var/cache/puppet/set_apache_domain',
+    require => File['/var/cache/puppet'],
+}
 
 file { '/var/www/wordpress/wp-config.php':
     source => 'puppet:///modules/server/wp-config.php',
