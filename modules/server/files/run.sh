@@ -18,7 +18,6 @@ docker run -i -t -d \
     -p 127.0.0.1:$[container_port+1+32768]:443 \
     -p 0.0.0.0:$[container_port+2+32768]:993 \
     -p 0.0.0.0:$[container_port+3+32768]:587 \
-    -m $container_memory \
     --name="$container_name" \
     -h $container_hostname \
     $container_image \

@@ -31,25 +31,6 @@ file { ['/var/cache/puppet/', '/containers/']:
     ensure => directory,
 }
 
-exec { 'enable_memory_swap':
-    command => 'sed \'s/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"/g\' /etc/default/grub > \
-                /etc/default/grub && touch /var/cache/puppet/enable_memory_swap',
-    creates => '/var/cache/puppet/enable_memory_swap',
-    require => File['/var/cache/puppet/'],
-}
-
-exec { 'update-grub':
-    command => 'update-grub && touch /var/cache/puppet/update-grub',
-    creates => '/var/cache/puppet/update-grub',
-    require => File['/var/cache/puppet/'],
-}
-
-exec { 'set_lxc_driver':
-    command => 'sed \'s/#DOCKER_OPTS="/DOCKER_OPTS="-e lxc /g\' /etc/default/docker.io > /etc/default/docker.io && touch /var/cache/puppet/set_lxc_driver',
-    creates => '/var/cache/puppet/set_lxc_driver',
-    require => [File['/var/cache/puppet/'], Package['docker.io']],
-}
-
 exec { 'enable_haproxy':
     command => 'sed -i s/ENABLED=0/ENABLED=1/g /etc/default/haproxy && touch /var/cache/puppet/enable_haproxy',
     creates => '/var/cache/puppet/enable_haproxy',
